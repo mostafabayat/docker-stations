@@ -1,0 +1,55 @@
+# docker run -it --name nginx --rm ubuntu:24.04 bash
+# for dir in {etc,opt,var,usr,root}; do docker cp nginx:/$dir /sotoon/raw/; done
+
+services:
+  mostafa:
+    image: ubuntu:24.04
+    container_name: mostafa
+    hostname: mosatafa
+    restart: always
+    privileged: true
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 524288
+    command: >
+      sh -c "service ssh start &&
+             service docker start &&
+             tail -f /dev/null"
+    volumes:
+      - /sotoon/mosi/etc/:/etc/
+      - /sotoon/mosi/opt/:/opt/
+      - /sotoon/mosi/var/:/var/
+      - /sotoon/mosi/usr/:/usr/
+      - /sotoon/mosi/root/:/root/
+    ports:
+      - "2021:22"
+    networks:
+      - stations
+  hojat:
+    image: ubuntu:24.04
+    container_name: hojat
+    hostname: hojat
+    restart: always
+    privileged: true
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 524288
+    command: >
+      sh -c "service ssh start &&
+             service docker start &&
+             tail -f /dev/null"
+    volumes:
+      - /sotoon/hojat/etc/:/etc/
+      - /sotoon/hojat/opt/:/opt/
+      - /sotoon/hojat/var/:/var/
+      - /sotoon/hojat/usr/:/usr/
+      - /sotoon/hojat/root/:/root/
+    ports:
+      - "2022:22"
+    networks:
+      - stations
+networks:
+  stations:
+    name: stations
